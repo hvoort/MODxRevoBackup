@@ -2,6 +2,12 @@ Backup (and restore) Script
 ===============
 for MODx Revolution (traditional) 
 
+###Requirements
+- MODx Revolution (traditional), (tested with 2.2.8-pl)
+- MODx package: "databackup-1.1.7-pl"
+- PHP Modules (PDO, ZipZrchive)
+- Write access
+
 
 ###How to use this script:
 First create a backup:
