@@ -2,10 +2,13 @@ Backup (and restore) Script
 ===============
 for MODx Revolution (traditional) with mysql database
 
+###Disclaimer
+This script is provided "AS-IS" without warranty of any kind.
+
 ###Requirements
 - MODx Revolution (traditional), (tested with 2.2.8-pl)
 - MODx package: "databackup-1.1.7-pl"
-- PHP Modules (PDO + mysql driver, ZipArchive)
+- PHP Modules (CURL, PDO + mysql driver, ZipArchive)
 - Write access
 
 
@@ -29,3 +32,9 @@ Then restore the backup on another server:
   - ./bigdump.php
   - ./[the zip]
   - ./[the script]
+
+### Thanks to 
+- Ozerov for sql import ([bigdump](http://www.ozerov.de/bigdump/))
+- Jgulledge19 for sql dump ([databackup](http://modx.com/extras/package/databackup))
+- Bootstrap for lay-out ([bootstrap](http://getbootstrap.com/))
+- Jquery for interaction ([jQuery](http://jquery.com/))
