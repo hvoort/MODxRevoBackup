@@ -505,37 +505,6 @@ switch ($action) {
                 break;
             }
 
-            /*// Load vars
-            require_once "config.core.php";
-            require_once MODX_CORE_PATH . 'config' . DIRECTORY_SEPARATOR . MODX_CONFIG_KEY . '.inc.php';
-
-            // Download adminer
-            cURLdownload("http://www.adminer.org/latest-mysql-en.php", "adminer.php");
-            if (file_exists("adminer.php")) {
-                // Modify adminer
-                $sr = array(
-                    '/header\("X-Frame-Options:[\sa-zA-Z]*"\);/' => 'header("X-Frame-Options: sameorigin");'
-                );
-                $c1 = file_put_contents("adminer.php", preg_replace(array_keys($sr), array_values($sr), file_get_contents("adminer.php")));
-                if ($c1 == false)
-                    addMessage("danger", "<p>Adminer preparation failed.</p>");
-                else
-                    addMessage("success", "<p>Adminer successfully downloaded and prepared. Use Adminer to import the sql file.</p>");
-
-                $adminer_url = "adminer.php?server=$database_server&username=$database_user&db=$dbase&import=";
-                copy($file, "adminer.sql");
-                */?><!--
-                <div class="row-fluid">
-                    <iframe class="container well well-small span6"
-                            style="height: 400px; background-color: #f5e5c5;"
-                            src="<?php /*echo $adminer_url */?>">
-                    </iframe>
-                </div>
-                --><?php
-            /*            } else
-                            addMessage("danger", "<p>Adminer script failed to downloaded or write.</p>");*/
-
-
             // Download bigdump
             cURLdownload("https://raw2.github.com/voltan/code/master/bigdump/bigdump.php", "bigdump.php");
             if (file_exists("bigdump.php")) {
