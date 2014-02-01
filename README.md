@@ -1,6 +1,11 @@
 Backup (and restore) Script
 ===============
-for MODx Revolution (traditional) with mysql database
+_for MODx Revolution (traditional) with mysql database_
+
+Purpose:
+- Backup (**complete**; files and database)
+- Restore (**complete**; files, database and new environment config)
+- Move to another server (by backup & restore)
 
 ###Disclaimer
 This script is provided "AS-IS" without warranty of any kind.
