@@ -386,10 +386,11 @@ switch ($action) {
                 "database_password = ".sQuote($database_password)  => "database_password = ".sQuote($_POST['dbpassword']),
                 "dbase = ".sQuote($dbase)                           => "dbase = ".sQuote($_POST['db']),
                 "database_dsn = ".sQuote($database_dsn)         => "database_dsn = ".sQuote($new_dsn),
-                "'" . $modx_root_path        => "'" . $new_modx_root_path,
+                "'" . $modx_root_path        => "'" . addslashes($new_modx_root_path),
                 "http_host=" . sQuote($http_host) => "http_host=" . sQuote($_POST['httphost'])
             );
 
+            // @todo replace (in file) linux forward slashes to windows backslashes
             $c4 = file_put_contents($core_config_inc, str_replace(array_keys($sr), array_values($sr), file_get_contents($core_config_inc)));
             if ($c4 == false)
                 addMessage("danger", "<p>The main config file failed.</p>");
