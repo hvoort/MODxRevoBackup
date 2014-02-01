@@ -260,7 +260,7 @@ switch ($action) {
                     <label for="corepath" class="col-sm-2 control-label">MODX CORE PATH:</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="corepath" id="corepath" value="<?php echo MODX_CORE_PATH ?>">
-                        <span class="help-block" id="corepathsuggestion">Suggestion: <a href="#" title="Click to activate."><?php echo $core_dir ?></a>.</span>
+                        <span class="help-block" id="corepathsuggestion">Suggestion: <a href="#" title="Click to activate."><?php echo $core_dir ?></a></span>
                         <script type="application/javascript">
                             $(document).ready(function () {
                                 $("#corepathsuggestion a").on("click", function (e) {
@@ -275,7 +275,7 @@ switch ($action) {
                     <label for="httphost" class="col-sm-2 control-label">HTTP HOST:</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" name="httphost" id="httphost" value="<?php echo $http_host ?>">
-                        <span class="help-block" id="httphostsuggestion">Suggestion: <a href="#" title="Click to activate."><?php echo $_SERVER['SERVER_NAME'] ?></a>.</span>
+                        <span class="help-block" id="httphostsuggestion">Suggestion: <a href="#" title="Click to activate."><?php echo $_SERVER['SERVER_NAME'] ?></a></span>
                         <script type="application/javascript">
                             $(document).ready(function () {
                                 $("#httphostsuggestion a").on("click", function (e) {
@@ -432,7 +432,9 @@ switch ($action) {
             addMessage("info", "<p>The existing database should be empty before submit.</p>");
 
             // Scan backup
-            $files = directoryToArray("export-db");
+            $files = array();
+            if (is_dir("export-db"))
+                $files = directoryToArray("export-db");
             $sqlfiles = array();
             foreach ($files as $file) {
                 if (strtolower(substr($file,-3)) === "sql")
@@ -501,8 +503,9 @@ switch ($action) {
 
             if (isset($_POST['sqllocation']) && file_exists($_POST['sqllocation'])) {
                 $file = $_POST['sqllocation'];
-            } else if ($_FILES["file"]["error"] <= 0 && file_exists($_FILES["file"]["tmp_name"])) {
+            } else if (!($_FILES["file"]["error"] > 0) && file_exists($_FILES["file"]["tmp_name"])) {
                 $file = $_FILES["file"]["tmp_name"];
+                // @todo create 'export-db' folder and copy uploaded file there
             } else {
                 addMessage("danger", "<p>No valid file for import process.</p>");
                 break;
