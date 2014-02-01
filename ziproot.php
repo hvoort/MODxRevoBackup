@@ -6,13 +6,14 @@
  * Add your ip to the $whitelist_addr list below
  */
 
-$whitelist_addr = array("127.0.0.1");
+$whitelist_addr = array("127.0.0.1", "::1");
 if (!in_array($_SERVER['REMOTE_ADDR'], $whitelist_addr)) {
     header("HTTP/1.1 403 Forbidden");
     exit;
 }
 
 @session_start();
+set_time_limit(600);
 ob_start();
 date_default_timezone_set("Europe/Amsterdam");
 
@@ -262,7 +263,7 @@ switch ($action) {
                         <span class="help-block" id="corepathsuggestion">Suggestion: <a href="#" title="Click to activate."><?php echo $core_dir ?></a>.</span>
                         <script type="application/javascript">
                             $(document).ready(function () {
-                                $("#corepathsuggestion").on("click", function (e) {
+                                $("#corepathsuggestion a").on("click", function (e) {
                                     e.preventDefault();
                                     $("#corepath").val("<?php echo $core_dir ?>");
                                 })
@@ -277,7 +278,7 @@ switch ($action) {
                         <span class="help-block" id="httphostsuggestion">Suggestion: <a href="#" title="Click to activate."><?php echo $_SERVER['SERVER_NAME'] ?></a>.</span>
                         <script type="application/javascript">
                             $(document).ready(function () {
-                                $("#httphostsuggestion").on("click", function (e) {
+                                $("#httphostsuggestion a").on("click", function (e) {
                                     e.preventDefault();
                                     $("#httphost").val("<?php echo $_SERVER['SERVER_NAME'] ?>");
                                 })
@@ -350,7 +351,8 @@ switch ($action) {
         } else if (isset($_POST['configform'])) {
 
             // check db connection
-            $new_dsn = "mysql:host={$_POST['dbserver']};dbname={$_POST['db']};charset={$database_connection_charset}";
+            // @todo dynamic port nr
+            $new_dsn = "mysql:host={$_POST['dbserver']};port=3307;dbname={$_POST['db']};charset={$database_connection_charset}";
             try {
                 $db = new PDO($new_dsn, $_POST['dbuser'], $_POST['dbpassword']);
             } catch (PDOException $e) {
@@ -362,8 +364,8 @@ switch ($action) {
 
             // config.core.php
             $sr = array(
-                sQuote(MODX_CONFIG_KEY) => sQuote($_POST['configkey']),
-                sQuote(MODX_CORE_PATH) => sQuote($_POST['corepath'])
+                sQuote(MODX_CONFIG_KEY) => sQuote(addslashes($_POST['configkey'])),
+                sQuote(MODX_CORE_PATH) => sQuote(addslashes($_POST['corepath']))
             );
             $c1 = file_put_contents($core_config_file, str_replace(array_keys($sr), array_values($sr), file_get_contents($core_config_file)));
             $c2 = file_put_contents($conn_config_file, str_replace(array_keys($sr), array_values($sr), file_get_contents($conn_config_file)));
@@ -506,8 +508,8 @@ switch ($action) {
             }
 
             // Download bigdump
-            cURLdownload("https://raw2.github.com/voltan/code/master/bigdump/bigdump.php", "bigdump.php");
-            if (file_exists("bigdump.php")) {
+            $res = cURLdownload("http://raw2.github.com/voltan/code/master/bigdump/bigdump.php", "bigdump.php");
+            if (file_exists("bigdump.php") && $res === true) {
 
                 // modify bigdump
                 require_once "config.core.php";
@@ -560,7 +562,7 @@ switch ($action) {
 
             }
             else
-                addMessage("danger", "<p>Failed to download BigDump. Import stopped.</p>");
+                addMessage("danger", "<p>Failed to download BigDump. Import stopped. $res</p>");
 
         }
         break;
@@ -768,10 +770,16 @@ function cURLdownload($url, $file)
             if( !curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true) ) return "FAIL: curl_setopt(CURLOPT_FOLLOWLOCATION)";
             if( !curl_setopt($ch, CURLOPT_FILE, $fp) ) return "FAIL: curl_setopt(CURLOPT_FILE)";
             if( !curl_setopt($ch, CURLOPT_HEADER, 0) ) return "FAIL: curl_setopt(CURLOPT_HEADER)";
-            if( !curl_exec($ch) ) return "FAIL: curl_exec()";
+            if( !curl_exec($ch) ) {
+                if($errno = curl_errno($ch)) {
+                    $error_message = curl_strerror($errno);
+                    return "FAIL: curl_exec(); cURL error ({$errno}):\n {$error_message}";
+                }
+                return "FAIL: curl_exec()";
+            }
             curl_close($ch);
             fclose($fp);
-            return "SUCCESS: $file [$url]";
+            return true;
         }
         else return "FAIL: fopen()";
     }
