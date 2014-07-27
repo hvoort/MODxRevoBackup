@@ -776,7 +776,7 @@ function cURLdownload($url, $file)
             if( !curl_setopt($ch, CURLOPT_HEADER, 0) ) return "FAIL: curl_setopt(CURLOPT_HEADER)";
             if( !curl_exec($ch) ) {
                 if($errno = curl_errno($ch)) {
-                    $error_message = curl_strerror($errno);
+                    $error_message = curl_error($errno);
                     return "FAIL: curl_exec(); cURL error ({$errno}):\n {$error_message}";
                 }
                 return "FAIL: curl_exec()";
