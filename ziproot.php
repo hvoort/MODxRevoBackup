@@ -44,6 +44,7 @@ switch ($action) {
                         <textarea class="form-control" name="excludes" rows="3"><?php
                             echo    str_replace(realpath("./") . "/", "", __FILE__) . PHP_EOL .
                                 "core/cache" . PHP_EOL .
+                                "assets/uploads" . PHP_EOL .
                                 "assets/components/phpthumbof/cache";
                             ?></textarea>
                         <span class="help-block">Line-break separated list. Directories without trailing slash.</span>
@@ -512,7 +513,7 @@ switch ($action) {
             }
 
             // Download bigdump
-            $res = cURLdownload("http://raw2.github.com/voltan/code/master/bigdump/bigdump.php", "bigdump.php");
+            $res = cURLdownload("https://github.com/almone/BigDump/raw/master/bigdump.php", "bigdump.php");
             if (file_exists("bigdump.php") && $res === true) {
 
                 // modify bigdump
