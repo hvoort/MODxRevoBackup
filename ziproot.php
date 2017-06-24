@@ -41,7 +41,7 @@ switch ($action) {
                 <div class="form-group">
                     <label for="excludes" class="col-sm-2 control-label">Exclude files/folders</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" name="excludes" rows="3"><?php
+                        <textarea class="form-control" name="excludes" rows="5"><?php
                             echo    str_replace(realpath("./") . "/", "", __FILE__) . PHP_EOL .
                                 "core/cache" . PHP_EOL .
                                 "assets/uploads" . PHP_EOL .
@@ -296,13 +296,13 @@ switch ($action) {
                 <div class="form-group">
                     <label for="dbuser" class="col-sm-2 control-label">Database User:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="dbuser" id="dbuser" value="<?php echo $database_user ?>">
+                        <input type="text" class="form-control" name="dbuser" id="dbuser" placeholder="username">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="dbpassword" class="col-sm-2 control-label">Database Password:</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="dbpassword" id="dbpassword" value="<?php echo $database_password ?>">
+                        <input type="text" class="form-control" name="dbpassword" id="dbpassword" placeholder="password">
                     </div>
                 </div>
                 <div class="form-group">
